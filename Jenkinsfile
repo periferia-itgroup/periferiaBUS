@@ -58,7 +58,7 @@ pipeline {
 					checkout changelog: false, poll: false,
 						scm: [$class : 'GitSCM', branches: [[name: '*/master']],
 							  extensions : [[$class: 'SparseCheckoutPaths',
-											 sparseCheckoutPaths: [[path: 'MODEL']]]],
+											 sparseCheckoutPaths: [[path: 'MAVEN']]]],
 							  userRemoteConfigs: [[credentialsId: 'GitHub token ugithub', url: 'https://github.com/periferia-itgroup/periferiaBUS.git']]]
 										
 					gitCommit = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
