@@ -22,12 +22,12 @@ pipeline {
 	}
 	
 	stages{
-		stage('CLEAN WORKSPACE'){
+		stage('Limpiar Repositorio'){
 			steps{
 				step([$class: 'WsCleanup'])
 			}
 		}
-		stage('1. Allocate workspace') { 
+		stage('1. Asignacion, espacio de trabajo') { 
 			steps{
 				echo "Valor inicial del requerimiento: "+params["REQUIREMENT"]
 				script{
