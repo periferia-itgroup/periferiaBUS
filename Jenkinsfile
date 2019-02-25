@@ -30,7 +30,7 @@ pipeline {
 				step([$class: 'WsCleanup'])
 			}
 		}
-		/*stage('1. Allocate workspace') { 
+		stage('1. Allocate workspace') { 
 			steps{
 				echo "Valor inicial del requerimiento: "+params["REQUIREMENT"]
 				script{
@@ -51,15 +51,14 @@ pipeline {
 					}		
 				}
 			}
-		}*/
-		
-	stage('2. Checkout') {
+		}
+		stage('2. Checkout') {
 			steps{
 				script{
 					checkout changelog: false, poll: false,
 						scm: [$class : 'GitSCM', branches: [[name: '*/master']],
 							  extensions : [[$class: 'SparseCheckoutPaths',
-											 sparseCheckoutPaths: [[path: 'MAVEN']]]],
+											 sparseCheckoutPaths: [[path: 'MODEL']]]],
 							  userRemoteConfigs: [[credentialsId: 'GitHub token ugithub', url: 'https://github.com/periferia-itgroup/periferiaBUS.git']]]
 										
 					gitCommit = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
@@ -88,14 +87,70 @@ pipeline {
 					echo 'Requerimiento: ' + gitRequirement
 					echo 'Email: ' + gitEmail
 					
-					sh('cp MAVEN/pom.xml pom.xml')
+					sh('cp MODEL/pom.xml pom.xml')
 						
 				}
 			}
 		}
-
-
-		
+		stage('3. Build') {
+			steps{
+				script {
+					if (gitMessage != ''){
+						echo 'Git commit: ' + gitCommit
+						def buildNumber = env.BUILD_NUMBER;
+						echo 'Build ' + buildNumber
+						echo './' + requerimiento + '/MQ/'
+						if ((params["COMPONENT"] == '' || params["COMPONENT"] == 'MQ') && fileExists('./' + requerimiento + '/MQ/')) {
+							echo 'MQ Artifacts found'
+							sh('pwd')
+							
+							build job: 'DOWNSTREAM-BUILD-MQ-RQ-GITHUB', parameters: [
+									[$class: 'StringParameterValue', name: 'REQUIREMENT', value: requerimiento],
+									[$class: 'StringParameterValue', name: 'USER', value: emailTo],
+									[$class: 'StringParameterValue', name: 'UPSTREAM_BUILD_NUMBER', value: buildNumber],
+									[$class: 'StringParameterValue',name: 'SVNVERSION', value: gitCommit],
+									[$class: 'StringParameterValue', name: 'ACTION', value: action],
+									[$class: 'StringParameterValue', name: 'WS_MASTER', value: workspace]]
+									
+															}
+						if ((params["COMPONENT"] == '' || params["COMPONENT"] == 'DB') && fileExists('./' + requerimiento + '/DB/')) {
+							echo 'DB Artifacts found'
+							sh('pwd')
+							build job: 'DOWNSTREAM-BUILD-DB-RQ-GITHUB', parameters: [
+									[$class: 'StringParameterValue', name: 'REQUIREMENT', value: requerimiento],
+									[$class: 'StringParameterValue', name: 'USER', value: emailTo],
+									[$class: 'StringParameterValue', name: 'UPSTREAM_BUILD_NUMBER', value: buildNumber],
+									[$class: 'StringParameterValue', name: 'SVNVERSION', value: gitCommit],
+									[$class: 'StringParameterValue', name: 'ACTION', value: action],
+									[$class: 'StringParameterValue', name: 'WS_MASTER', value: workspace]]
+						}
+						if ((params["COMPONENT"] == '' || params["COMPONENT"] == 'BAR') && fileExists('./' + requerimiento + '/BAR/')) {
+							echo 'BAR Artifacts found'
+							sh('pwd')
+							build job: 'DOWNSTREAM-BUILD-BAR-RQ-GITHUB', parameters: [
+									[$class: 'StringParameterValue', name: 'REQUIREMENT', value: requerimiento],
+									[$class: 'StringParameterValue', name: 'USER', value: emailTo],
+									[$class: 'StringParameterValue', name: 'UPSTREAM_BUILD_NUMBER', value: buildNumber],
+									[$class: 'StringParameterValue', name: 'SVNVERSION', value: gitCommit],
+									[$class: 'StringParameterValue', name: 'ACTION', value: action],
+									[$class: 'StringParameterValue', name: 'WS_MASTER', value: workspace]]
+						}
+						if ((params["COMPONENT"] == '' || params["COMPONENT"] == 'DP') && fileExists('./' + requerimiento + '/DP/')) {
+							echo 'DP Artifacts found'
+							sh('pwd')
+							build job: 'DOWNSTREAM-BUILD-DP-RQ-GITHUB', parameters: [
+									[$class: 'StringParameterValue', name: 'REQUIREMENT', value: requerimiento],
+									[$class: 'StringParameterValue', name: 'USER', value: emailTo],
+									[$class: 'StringParameterValue', name: 'UPSTREAM_BUILD_NUMBER', value: buildNumber],
+									[$class: 'StringParameterValue', name: 'SVNVERSION', value: gitCommit],
+									[$class: 'StringParameterValue', name: 'ACTION', value: action],
+									[$class: 'StringParameterValue', name: 'WS_MASTER', value: workspace]]
+						}
+					}
+				}
+			}
+		}
+	}
 
 post {
         success {
