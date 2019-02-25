@@ -11,9 +11,6 @@ pipeline {
 	string( name: 'USER', 
 	    defaultValue: '', 
 	    description: 'Correo electronico')
-	string( name: 'ID_JIRA', 
-	    defaultValue: '', 
-	    description: 'Identificador ID requerimiento Jira')
 	}
 	
 	environment{
@@ -52,6 +49,48 @@ pipeline {
 				}
 			}
 		}
+		stage('2. Checkout') {
+			steps{
+				script{
+					checkout changelog: false, poll: false,
+						scm: [$class : 'GitSCM', branches: [[name: '*/master']],
+							  extensions : [[$class: 'SparseCheckoutPaths',
+											 sparseCheckoutPaths: [[path: 'MODEL']]]],
+							  userRemoteConfigs: [[credentialsId: 'GitHub token ugithub', url: 'https://github.com/periferia-itgroup/periferiaBUS.git']]]
+										
+					gitCommit = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+					gitMessage = sh(returnStdout: true, script: 'git log -1 | grep RQ || true').trim()
+					gitRequirement=sh(returnStdout: true, script: "git log -1 | grep RQ | sed 's/:.*//'|| true").trim()
+					gitEmail=sh(returnStdout: true, script: "git log -1 | grep RQ | cut -d ':' -f2 || true").trim()
+					
+					step([$class: 'WsCleanup'])
+					
+					if (params["REQUIREMENT"] != "0") {//si no se especifica se emplea el del commit
+						requerimiento=params["REQUIREMENT"]
+						emailTo=params["USER"]
+					}else{
+						requerimiento=gitRequirement
+						emailTo=gitEmail
+					}
+					
+					shell('pwd')
+					checkout changelog: false, poll: false,
+							scm: [$class : 'GitSCM', branches: [[name: '*/master']],
+								  extensions : [[$class: 'SparseCheckoutPaths',
+												 sparseCheckoutPaths: [[path: 'MODEL'], [path: requerimiento]]]],
+								  userRemoteConfigs: [[credentialsId: 'GitHub token ugithub', url: 'https://github.com/periferia-itgroup/periferiaBUS.git']]]
+
+					echo 'Mensaje de commit: ' + gitMessage
+					echo 'Requerimiento: ' + gitRequirement
+					echo 'Email: ' + gitEmail
+					
+					sh('cp MODEL/pom.xml pom.xml')
+						
+				}
+			}
+		}
+
+	}
 
 post {
         success {
