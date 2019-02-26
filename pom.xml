@@ -197,7 +197,7 @@
 
 						</configuration>
 						<goals>
-							<goal>run</goal>
+							<goal>default-deploy</goal>
 						</goals>
 					</execution>
 
