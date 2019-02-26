@@ -197,8 +197,13 @@
 
 						</configuration>
 						<goals>
-							<goal>default-deploy</goal>
+							<goal>run</goal>
 						</goals>
+
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+
 					</execution>
 
 
