@@ -197,7 +197,7 @@
 
 						</configuration>
 						<goals>
-							<goal>run</goal>
+							<goal>build</goal>
 						</goals>
 
 					</execution>
