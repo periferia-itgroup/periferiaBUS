@@ -10,10 +10,10 @@
 	
 	<properties>
 	  <workspace.dir>./target</workspace.dir>
-	  <JAVAC>/opt/IBM/iib-10.0.0.7/common/jdk/bin/javac</JAVAC>
-	  <MQSI_JARPATH>/opt/IBM/iib-10.0.0.7/common/classes/IntegrationAPI.jar</MQSI_JARPATH>
-	  <MQSI_CLASSES>/opt/IBM/iib-10.0.0.7/server/classes/</MQSI_CLASSES>
-	  <mqsi.home>/opt/IBM/iib-10.0.0.7/server/bin/</mqsi.home>
+	  <JAVAC>C:\Program Files\IBM\IIB\10.0.0.8\common\jdk\bin\javac</JAVAC>
+	  <MQSI_JARPATH>C:\Program Files\IBM\IIB\10.0.0.8\common\classes\IntegrationAPI.jar</MQSI_JARPATH>
+	  <MQSI_CLASSES>C:\Program Files\IBM\IIB\10.0.0.8\server\classes\</MQSI_CLASSES>
+	  <mqsi.home>C:\Program Files\IBM\IIB\10.0.0.8\server\bin\</mqsi.home>
 	  <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
 	</properties>
 
