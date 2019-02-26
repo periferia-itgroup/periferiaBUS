@@ -1,72 +1,77 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+	  <groupId>org.ath.esb.build</groupId>
+	  <artifactId>periferiaBUS</artifactId>
+	  <version>0.0.1</version>
+	  <relativePath>../../../pom.xml</relativePath>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.ath.integration</groupId>
+	<artifactId>RQ31831_BankCusLimitInq</artifactId>
+	<version>0.0.1</version>
+	<packaging>pom</packaging>
+	<name>RQ31831_BankCusLimitInq</name>
+	<description>RQ31831_BankCusLimitInq</description>  
+	<properties>
+	  <git.svc>https://devops-github.ath.net/esb/iib-pb-accounts</git.svc>
+	  <project.fachade>BankCusLimitInq_FcdWs</project.fachade>
+	  <project.avv>BankCusLimitInq_GetCustLimit_WS_AVV</project.avv>
+	  <pattern.includeAll>/**/*</pattern.includeAll>
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-scm-plugin</artifactId>
+				<version>1.9.4</version>
+				<executions>
+					<execution>
+						<id>repo1-dependency</id>
+						<phase>generate-sources</phase>
+						<configuration>
+							<basedir>target</basedir>
+							<excludes>**/*</excludes>
+							<includes>${project.fachade}${pattern.includeAll},${project.avv}${pattern.includeAll}</includes>
+							<connectionUrl>scm:git:${git.svc}</connectionUrl>
+							<checkoutDirectory>target</checkoutDirectory>
+						</configuration>
+						<goals>
+							<goal>checkout</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>package</id>
+						<phase>package</phase>
 
-    <groupId>com.techprimers.testing</groupId>
-    <artifactId>periferiaBUS</artifactId>
-    <version>1.0-SNAPSHOT</version>
+						<configuration>
 
+							<target name="create-bar" description=" create BAR ">
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.8</java.version>
-        <junit.jupiter.version>5.0.0-M3</junit.jupiter.version>
-        <junit.platform.version>1.0.0-M3</junit.platform.version>
-    </properties>
-
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.19</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.junit.platform</groupId>
-                        <artifactId>junit-platform-surefire-provider</artifactId>
-                        <version>1.0.0-M3</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-        </plugins>
-    </build>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.0.0-M3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-runner</artifactId>
-            <version>${junit.platform.version}</version>
-        </dependency>
-
-    </dependencies>
-
-    <repositories>
-        <repository>
-            <id>myMavenRepo.read</id>
-            <url>https://mymavenrepo.com/repo/FN8PIshHk5uALNhkXbhs/</url>
-        </repository>
-    </repositories>
-
-    <distributionManagement>
-        <repository>
-            <id>myMavenRepo.write</id>
-            <url>https://mymavenrepo.com/repo/9Q8JoRpymi4UGK8HzbVq/</url>
-        </repository>
-    </distributionManagement>
-
+								<java classname="com.ibm.broker.config.appdev.FlowRendererBAR"
+									failonerror="true" fork="true">
+									<arg line="-w target/" />
+									<arg line="-a target/${project.name}.bar" />
+									<arg line="-k ${project.fachade} ${project.avv}" />
+									<classpath>
+										<pathelement location="${MQSI_JARPATH}" />
+									</classpath>
+								</java>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
