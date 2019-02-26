@@ -1,6 +1,7 @@
 pipeline{
-	
-	stage('SCM Checkout'){
-		git 'https://github.com/periferia-itgroup/periferiaBUS'
-	}
+	node {
+   git "https://github.com/periferia-itgroup/periferiaBUS.git"
+   sh "echo unit test app"
+}
+
 }
