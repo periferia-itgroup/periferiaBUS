@@ -5,7 +5,7 @@ node{
 			stage('Build Maven'){
 				 def MvnHome = tool name: '4.0.0', type: 'maven'	
 			}
-			stage(''){
+			stage('Maven Complete Package'){
 				def mvnSell = echo "Maven download success"
 			}
 }
