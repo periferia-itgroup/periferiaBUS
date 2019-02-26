@@ -168,8 +168,8 @@
 			    <target name="create-bar" description=" create BAR ">
 				    <java classname="com.ibm.broker.config.appdev.FlowRendererBAR"
 					    failonerror="true" fork="true">
-					    <arg line="-w target/" />
-					    <arg line="-a target/${project.name}.bar" />
+					    <arg line="-k target/" />
+					    <arg line="-k target/${project.name}.bar" />
 					    <arg line="-k ${project.fachade} ${project.avv}" />
 					    <classpath>
 						    <pathelement location="${MQSI_JARPATH}" />
