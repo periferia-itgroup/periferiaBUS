@@ -1,100 +1,45 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
 	<modelVersion>4.0.0</modelVersion>
-
-	<groupId>comPeriferiaITGroup</groupId>
-	<artifactId>ElempleoTalentoHumano</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
-
-	<name>ElempleoTalentoHumano</name>
-	<url>http://maven.apache.org</url>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<groupId>org.ath.integration</groupId>
+	<artifactId>customers.avv.backend.9111</artifactId>
+	<version>0.0.1</version>
+	<packaging>pom</packaging>
+	<name>customers.avv.backend.9111</name>
+	<description>customers.avv.backend.9111</description>
+	
+	<properties> <svn.svc.backend>http://127.0.0.1/repo1/ATH/F_Datapower/trunk/PersonalBanking/Customers/Service/</svn.svc.backend>
+ <svn.svc.policy>http://127.0.0.1/repo1/ATH/F_Datapower/trunk/PersonalBanking/Customers/Service/</svn.svc.policy>
+	  <svn.repository.user>user</svn.repository.user>
+	  <svn.repository.passwd>pass</svn.repository.passwd>
 	</properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-java</artifactId>
-			<version>3.141.59</version>
-		</dependency>
-
-
-		<dependency>
-			<groupId>org.testng</groupId>
-			<artifactId>testng</artifactId>
-			<version>6.8</version>
-			<scope>test</scope>
-		</dependency>
-
-
-
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<version>2.8.2</version>
-		</dependency>
-
-
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-server</artifactId>
-			<version>3.0.1</version>
-		</dependency>
-
-
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-			<version>3.17</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
-			<version>3.17</version>
-		</dependency>
-
-
-		<dependency>
-			<groupId>com.opencsv</groupId>
-			<artifactId>opencsv</artifactId>
-			<version>4.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>net.sourceforge.javacsv</groupId>
-			<artifactId>javacsv</artifactId>
-			<version>2.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.github.2gis.winium</groupId>
-			<artifactId>winium-webdriver</artifactId>
-			<version>0.1.0-1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.asprise.ocr</groupId>
-			<artifactId>java-ocr-api</artifactId>
-			<version>[15,)</version>
-		</dependency>
-
-		<dependency>
-			<groupId>net.sourceforge.jexcelapi</groupId>
-			<artifactId>jxl</artifactId>
-			<version>2.6.12</version>
-		</dependency>
-
-	</dependencies>
+	<build>
+		<plugins>
+		  
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-scm-plugin</artifactId>
+				<version>1.9.4</version>
+				<executions>
+					<execution>
+						<id>svn.svc.backend</id>
+						<phase>generate-sources</phase>
+						<configuration>
+							<basedir>target</basedir>
+							<connectionUrl>scm:svn:${svn.svc.backend}</connectionUrl>
+							<checkoutDirectory>target</checkoutDirectory>
+							<includes>*${project.name}*</includes>
+							<username>${svn.repository.user}</username>
+							<password>${svn.repository.passwd}</password>
+						</configuration>
+						<goals>
+							<goal>checkout</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
