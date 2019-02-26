@@ -153,30 +153,51 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>1.7</version>
-			<executions>
+				<executions>
+
+
 					<execution>
-						<id>package</id>
-						<phase>package</phase>
+						<id>compile</id>
+						<phase>compile</phase>
 
 						<configuration>
 
-							<target name="create-bar" description=" create BAR ">
+							<target name="create-jar" description=" JAR GlobalCache  ">
 
-								<java classname="com.ibm.broker.config.appdev.FlowRendererBAR"
-									failonerror="true" fork="true">
-									<arg line="-w target/" />
-									<arg line="-a target/${project.name}.bar" />
-									<arg line="-k ${project.fachade} ${project.avv}" />
+
+								<mkdir dir="${workspace.dir}/GlobalCache/bin" />
+								<javac fork="yes" executable="${JAVAC}" encoding="ISO-8859-1"
+									destdir="${workspace.dir}/GlobalCache/bin" source="1.7" target="1.7">
+									<src path="${workspace.dir}/GlobalCache/src" />
 									<classpath>
-										<pathelement location="${MQSI_JARPATH}" />
+										<fileset dir="${MQSI_CLASSES}">
+											<include name="*.jar" />
+										</fileset>
 									</classpath>
-								</java>
+								</javac>
+
+
+								<jar destfile="${workspace.dir}/GlobalCache/GlobalCache.jar"
+									basedir="${workspace.dir}/GlobalCache/bin" includes="**">
+
+								</jar>
+
+
 							</target>
+
+
+
 						</configuration>
 						<goals>
 							<goal>run</goal>
 						</goals>
 					</execution>
+
+
+					
+
+
+
 				</executions>
 
 			</plugin>
