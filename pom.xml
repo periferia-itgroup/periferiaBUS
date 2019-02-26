@@ -8,14 +8,14 @@
 	<name>iib-bar-generation</name>
 	<description>iib-bar-generation</description> 
 	
-	<!--<properties>
+	<properties>
 	  <workspace.dir>./target</workspace.dir>
 	  <JAVAC>C:\Program Files\IBM\IIB\10.0.0.8\common\jdk\bin\javac</JAVAC>
 	  <MQSI_JARPATH>C:\Program Files\IBM\IIB\10.0.0.8\common\classes\IntegrationAPI.jar</MQSI_JARPATH>
 	  <MQSI_CLASSES>C:\Program Files\IBM\IIB\10.0.0.8\server\classes/</MQSI_CLASSES>
 	  <mqsi.home>C:\Program Files\IBM\IIB\10.0.0.8\server\bin</mqsi.home>
 	  <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
-	</properties>-->
+	</properties>
 
 	<dependencies>
 
@@ -59,6 +59,14 @@
 			<artifactId>maven-help-plugin</artifactId>
 			<version>2.1.1</version>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-deploy-plugin -->
+<dependency>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-deploy-plugin</artifactId>
+    <version>2.7</version>
+</dependency>
+
 
 
 
@@ -162,7 +170,7 @@
 
 						<configuration>
 
-							<!-- <target name="create-jar" description=" JAR GlobalCache  ">
+							 <target name="create-jar" description=" JAR GlobalCache  ">
 
 
 								<mkdir dir="${workspace.dir}/GlobalCache/bin" />
@@ -183,7 +191,7 @@
 								</jar>
 
 
-							</target> -->
+							</target>
 
 
 
