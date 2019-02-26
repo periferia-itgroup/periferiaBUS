@@ -1,0 +1,82 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<parent>
+	  <groupId>org.ath.esb.build</groupId>
+	  <artifactId>iib-bar-generation</artifactId>
+	  <version>0.0.1</version>
+	  <relativePath>../../../pom.xml</relativePath>
+	</parent>
+	
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.ath.integration</groupId>
+	<artifactId>BillPaymentPSE</artifactId>
+	<version>0.0.1</version>
+	<packaging>pom</packaging>
+	<name>BillPaymentPSE</name>
+	<description>BillPaymentPSE</description> 
+	
+	<properties>
+	  <git.svc>https://devops-github.ath.net/esb/iib-pb-payments</git.svc>
+	  <project.facade>BillPaymentPSE_MFW</project.facade>
+	  <project.avv>BillPaymentPSE_MFW_AVV</project.avv>
+	  <pattern.includeAll>/**/*</pattern.includeAll>
+	</properties>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-scm-plugin</artifactId>
+				<version>1.9.4</version>
+				<executions>
+					<execution>
+						<id>repo1-dependency</id>
+						<phase>generate-sources</phase>
+						<configuration>
+							<basedir>target</basedir>
+							<excludes>**/*</excludes>
+							<includes>${project.facade}${pattern.includeAll},${project.avv}${pattern.includeAll}</includes>
+							<connectionUrl>scm:git:${git.svc}</connectionUrl>
+							<checkoutDirectory>target</checkoutDirectory>
+						</configuration>
+						<goals>
+							<goal>checkout</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>package</id>
+						<phase>package</phase>
+
+						<configuration>
+
+							<target name="create-bar" description=" create BAR ">
+
+								<java classname="com.ibm.broker.config.appdev.FlowRendererBAR"
+									failonerror="true" fork="true">
+									<arg line="-w target/" />
+									<arg line="-a target/${project.name}.bar" />
+									<arg line="-k ${project.facade} ${project.avv}" />
+									<classpath>
+										<pathelement location="${MQSI_JARPATH}" />
+									</classpath>
+								</java>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	
+</project>
