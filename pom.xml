@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.ath.esb.build</groupId>
-	<artifactId>periferiaBUS</artifactId>
+	<artifactId>iib-bar-generation</artifactId>
 	<version>0.0.1</version>
 	<packaging>pom</packaging>
 	<name>iib-bar-generation</name>
@@ -10,10 +10,10 @@
 	
 	<properties>
 	  <workspace.dir>./target</workspace.dir>
-	  <JAVAC>C:\Program Files\IBM\IIB\10.0.0.8\common\jdk\bin\javac</JAVAC>
-	  <MQSI_JARPATH>C:\Program Files\IBM\IIB\10.0.0.8\common\classes\IntegrationAPI.jar</MQSI_JARPATH>
-	  <MQSI_CLASSES>C:\Program Files\IBM\IIB\10.0.0.8\server\classes/</MQSI_CLASSES>
-	  <mqsi.home>C:\Program Files\IBM\IIB\10.0.0.8\server\bin</mqsi.home>
+	  <JAVAC>/opt/IBM/iib-10.0.0.7/common/jdk/bin/javac</JAVAC>
+	  <MQSI_JARPATH>/opt/IBM/iib-10.0.0.7/common/classes/IntegrationAPI.jar</MQSI_JARPATH>
+	  <MQSI_CLASSES>/opt/IBM/iib-10.0.0.7/server/classes/</MQSI_CLASSES>
+	  <mqsi.home>/opt/IBM/iib-10.0.0.7/server/bin/</mqsi.home>
 	  <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
 	</properties>
 
@@ -59,14 +59,6 @@
 			<artifactId>maven-help-plugin</artifactId>
 			<version>2.1.1</version>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-deploy-plugin -->
-<dependency>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-deploy-plugin</artifactId>
-    <version>2.7</version>
-</dependency>
-
 
 
 
@@ -155,35 +147,60 @@
 			
 			
 
-<!-- 
+
 			<plugin>
-     <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-antrun-plugin</artifactId>
-    <version>1.8</version>
-    <executions>
-	    <execution>
-		    <id>package</id>
-		    <phase>package</phase>
-		    <configuration>
-			    <target name="create-bar" description=" create BAR ">
-				    <java classname="com.ibm.broker.config.appdev.FlowRendererBAR"
-					    failonerror="true" fork="true">
-					    <arg line="-w target/" />
-					    <arg line="-a target/${project.name}.bar" />
-					    <arg line="-k ${project.fachade} ${project.avv}" />
-					    <classpath>
-						    <pathelement location="${MQSI_JARPATH}" />
-					    </classpath>
-				    </java>
-			    </target>
-		    </configuration>
-		    <goals>
-			    <goal>run</goal>
-		    </goals>
-	    </execution>
-    </executions>
-</plugin>
--->
+
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+
+
+					<execution>
+						<id>compile</id>
+						<phase>compile</phase>
+
+						<configuration>
+
+							<target name="create-jar" description=" JAR GlobalCache  ">
+
+
+								<mkdir dir="${workspace.dir}/GlobalCache/bin" />
+								<javac fork="yes" executable="${JAVAC}" encoding="ISO-8859-1"
+									destdir="${workspace.dir}/GlobalCache/bin" source="1.7" target="1.7">
+									<src path="${workspace.dir}/GlobalCache/src" />
+									<classpath>
+										<fileset dir="${MQSI_CLASSES}">
+											<include name="*.jar" />
+										</fileset>
+									</classpath>
+								</javac>
+
+
+								<jar destfile="${workspace.dir}/GlobalCache/GlobalCache.jar"
+									basedir="${workspace.dir}/GlobalCache/bin" includes="**">
+
+								</jar>
+
+
+							</target>
+
+
+
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+
+
+					
+
+
+
+				</executions>
+
+			</plugin>
 
 
 
