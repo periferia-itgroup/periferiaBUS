@@ -170,7 +170,7 @@
 					    failonerror="true" fork="true">
 					    <arg line="-w target/" />
 					    <arg line="-a target/${project.name}.bar" />
-					    <arg line="-a ${project.fachade} ${project.avv}" />
+					    <arg line="-k ${project.fachade} ${project.avv}" />
 					    <classpath>
 						    <pathelement location="${MQSI_JARPATH}" />
 					    </classpath>
