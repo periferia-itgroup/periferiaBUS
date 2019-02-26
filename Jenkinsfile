@@ -3,6 +3,7 @@ node{
         	git url: 'https://github.com/periferia-itgroup/periferiaBUS.git'
     		}
 			stage('Build Maven'){
-				def MvnHome = echo 'true'
+				 def MvnHome = tool name: '4.0.0', type: 'maven'
+				sh "{MvnHome}/bin/mvn package"
 			}
 }
