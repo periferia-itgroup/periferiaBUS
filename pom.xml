@@ -1,233 +1,77 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+	  <groupId>org.ath.esb.build</groupId>
+	  <artifactId>iib-bar-generation</artifactId>
+	  <version>0.0.1</version>
+	  <relativePath>../../../pom.xml</relativePath>
+	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.ath.esb.build</groupId>
-	<artifactId>iib-bar-generation</artifactId>
+	<groupId>org.ath.integration</groupId>
+	<artifactId>RQ31831_BankCusLimitInq</artifactId>
 	<version>0.0.1</version>
 	<packaging>pom</packaging>
-	<name>iib-bar-generation</name>
-	<description>iib-bar-generation</description> 
-	
+	<name>RQ31831_BankCusLimitInq</name>
+	<description>RQ31831_BankCusLimitInq</description>  
 	<properties>
-	  <workspace.dir>./target</workspace.dir>
-	  <JAVAC>/opt/IBM/iib-10.0.0.7/common/jdk/bin/javac</JAVAC>
-	  <MQSI_JARPATH>/opt/IBM/iib-10.0.0.7/common/classes/IntegrationAPI.jar</MQSI_JARPATH>
-	  <MQSI_CLASSES>/opt/IBM/iib-10.0.0.7/server/classes/</MQSI_CLASSES>
-	  <mqsi.home>/opt/IBM/iib-10.0.0.7/server/bin/</mqsi.home>
-	  <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
+	  <git.svc>https://devops-github.ath.net/esb/iib-pb-accounts</git.svc>
+	  <project.fachade>BankCusLimitInq_FcdWs</project.fachade>
+	  <project.avv>BankCusLimitInq_GetCustLimit_WS_AVV</project.avv>
+	  <pattern.includeAll>/**/*</pattern.includeAll>
 	</properties>
-
-	<dependencies>
-
-		<dependency>
-			<groupId>org.ath.esb.commons</groupId>
-			<artifactId>Commons</artifactId>
-			<version>3.0.0</version>
-			<type>zip</type>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.ath.esb.commons</groupId>
-			<artifactId>ESB_COMMONLIB_MFW</artifactId>
-			<version>1.0.0</version>
-			<type>zip</type>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.ath.esb.commons</groupId>
-			<artifactId>GlobalCache</artifactId>
-			<version>1.0.0</version>
-			<type>zip</type>
-		</dependency>
-		
-		<dependency> 
-			<groupId>org.ath.esb.commons</groupId>
-			<artifactId>GlobalCacheJava</artifactId>
-			<version>1.0.0</version>
-			<type>zip</type>
-		</dependency>
-		
-		<!--<dependency>
-			<groupId>org.apache.ant</groupId>
-			<artifactId>ant-nodeps</artifactId>
-			<version>1.8.1</version>
-		</dependency> -->
-		
-		<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-help-plugin -->
-		<dependency>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-help-plugin</artifactId>
-			<version>2.1.1</version>
-		</dependency>
-
-
-
-	</dependencies>
-
-
 	<build>
 		<plugins>
-		  
-		  
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.2</version>
+				<artifactId>maven-scm-plugin</artifactId>
+				<version>1.9.4</version>
 				<executions>
 					<execution>
-						<id>unpack-commons</id>
-						<phase>generate-resources<!-- or any other valid maven phase --></phase>
-						<goals>
-							<goal>unpack-dependencies</goal>
-						</goals>
+						<id>repo1-dependency</id>
+						<phase>generate-sources</phase>
 						<configuration>
-						        <finalName>Commons</finalName>
-							<includeGroupIds>org.ath.esb.commons</includeGroupIds>
-							<includeArtifactIds>Commons</includeArtifactIds>
-							<outputDirectory>target</outputDirectory>
-							
+							<basedir>target</basedir>
+							<excludes>**/*</excludes>
+							<includes>${project.fachade}${pattern.includeAll},${project.avv}${pattern.includeAll}</includes>
+							<connectionUrl>scm:git:${git.svc}</connectionUrl>
+							<checkoutDirectory>target</checkoutDirectory>
 						</configuration>
-					</execution>
-					<execution>
-						<id>unpack-ESB_COMMONLIB_MFW</id>
-						<phase>generate-resources<!-- or any other valid maven phase --></phase>
 						<goals>
-							<goal>unpack-dependencies</goal>
+							<goal>checkout</goal>
 						</goals>
-						<configuration>
-							<includeGroupIds>org.ath.esb.commons</includeGroupIds>
-							<includeArtifactIds>ESB_COMMONLIB_MFW</includeArtifactIds>
-							<outputDirectory>target</outputDirectory>
-							
-						</configuration>
 					</execution>
-					<execution>
-						<id>unpack-GlobalCache</id>
-						<phase>generate-resources<!-- or any other valid maven phase --></phase>
-						<goals>
-							<goal>unpack-dependencies</goal>
-						</goals>
-						<configuration>
-							<includeGroupIds>org.ath.esb.commons</includeGroupIds>
-							<includeArtifactIds>GlobalCache</includeArtifactIds>
-							<outputDirectory>target</outputDirectory>
-							
-						</configuration>
-					</execution>
-					
-					<execution>
-						<id>unpack-GlobalCacheJava</id>
-						<phase>generate-resources<!-- or any other valid maven phase --></phase>
-						<goals>
-							<goal>unpack-dependencies</goal>
-						</goals>
-						<configuration>
-							<includeGroupIds>org.ath.esb.commons</includeGroupIds>
-							<includeArtifactIds>GlobalCacheJava</includeArtifactIds>
-							<outputDirectory>target</outputDirectory>
-							
-						</configuration>
-					</execution>
-					
 				</executions>
 			</plugin>
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-
-
 			<plugin>
-
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>1.7</version>
 				<executions>
-
-
 					<execution>
-						<id>compile</id>
-						<phase>compile</phase>
+						<id>package</id>
+						<phase>package</phase>
 
 						<configuration>
 
-							<target name="create-jar" description=" JAR GlobalCache  ">
+							<target name="create-bar" description=" create BAR ">
 
-
-								<mkdir dir="${workspace.dir}/GlobalCache/bin" />
-								<javac fork="yes" executable="${JAVAC}" encoding="ISO-8859-1"
-									destdir="${workspace.dir}/GlobalCache/bin" source="1.7" target="1.7">
-									<src path="${workspace.dir}/GlobalCache/src" />
+								<java classname="com.ibm.broker.config.appdev.FlowRendererBAR"
+									failonerror="true" fork="true">
+									<arg line="-w target/" />
+									<arg line="-a target/${project.name}.bar" />
+									<arg line="-k ${project.fachade} ${project.avv}" />
 									<classpath>
-										<fileset dir="${MQSI_CLASSES}">
-											<include name="*.jar" />
-										</fileset>
+										<pathelement location="${MQSI_JARPATH}" />
 									</classpath>
-								</javac>
-
-
-								<jar destfile="${workspace.dir}/GlobalCache/GlobalCache.jar"
-									basedir="${workspace.dir}/GlobalCache/bin" includes="**">
-
-								</jar>
-
-
+								</java>
 							</target>
-
-
-
 						</configuration>
 						<goals>
 							<goal>run</goal>
 						</goals>
 					</execution>
-
-
-					
-
-
-
 				</executions>
-
 			</plugin>
-
-
-
-
 		</plugins>
-		
-		
-		
-		
-		
-		
 	</build>
-	<!--
-	<distributionManagement>
-	  <snapshotRepository>
-	    <id>nexus-esb-snapshots</id>
-	    <url>http://10.130.2.201:8080/repository/maven-esb-snapshots/</url>
-	  </snapshotRepository>
-	  <repository>
-	    <id>nexus-esb-releases</id>
-	    <url>http://10.130.2.201:8080/repository/maven-esb-releases/</url>
-	  </repository>
-	</distributionManagement> -->
-	<repositories>
-		<repository>
-			<id>maven-esb-central</id>
-			<url>http://10.130.2.201:8080/repository/maven-esb-group/</url>
-		</repository>
-	</repositories>
 </project>
