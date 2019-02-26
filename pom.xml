@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 	  <groupId>org.ath.esb.build</groupId>
-	  <artifactId>periferiaBUS</artifactId>
+	  <artifactId>iib-bar-generation</artifactId>
 	  <version>0.0.1</version>
 	  <relativePath>../../../pom.xml</relativePath>
 	</parent>
@@ -58,7 +58,7 @@
 								<java classname="com.ibm.broker.config.appdev.FlowRendererBAR"
 									failonerror="true" fork="true">
 									<arg line="-w target/" />
-									<arg line="-a target/${project.name}.bar" />
+									<arg line="-a target/${file}.bar" />
 									<arg line="-k ${project.fachade} ${project.avv}" />
 									<classpath>
 										<pathelement location="${MQSI_JARPATH}" />
