@@ -7,7 +7,7 @@ node{
 			}
 			stage('Maven Complete Package'){
 				def mvnSell = echo "Maven download success"
-				 sh "mvn clean install"
+				 
 			}
 }
 
