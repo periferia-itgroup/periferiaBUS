@@ -4,16 +4,8 @@ node("Windows Execution"){
     		echo "Repository Cloned Success"
 			}
 	stage('Build Maven'){
-	    withMaven(...) {
- 
+	    
       bat "mvn clean install"
  
-    } // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe reports and FindBugs reports
 	}
 }
-
-
-
-
-
-
