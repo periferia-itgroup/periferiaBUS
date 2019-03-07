@@ -9,10 +9,16 @@ node{
  
 	}
 	
-	stage('Sonarqube') {
+	stage('Scanner Sonarqube') {
     environment {
         scannerHome = tool 'SonarQubeScanner'
     	}
     }
-	
+	    stage('Build Sonar Sacanner'){
+		    
+	    
+        withSonarQubeEnv('Sonarqube') {
+            sh "${scannerHome}/bin/sonar-scanner"
+	}
+    }
 }
