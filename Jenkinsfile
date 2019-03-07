@@ -18,7 +18,7 @@ node{
 		    
 	    
         withSonarQubeEnv('Sonarqube') {
-            sh "${scannerHome}/bin/sonar-scanner"
+            sh "${scannerHome}/SONAR-COMPLETE/sonar-scanning-examples/sonar-scanner"
 	}
     }
 }
