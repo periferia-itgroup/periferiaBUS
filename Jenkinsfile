@@ -14,11 +14,10 @@ node{
         scannerHome = tool 'SonarQubeScanner'
     	}
     }
-	    stage('Build Sonar Sacanner'){
+	    stage('Build Sonar Scanner'){
 		    
-	    
         withSonarQubeEnv('Sonarqube') {
-            sh "${scannerHome}/SONAR-COMPLETE/sonar-scanning-examples/sonar-scanner"
+            sh "${scannerHome}/bin/sonar-scanner"
 	}
     }
 }
