@@ -13,11 +13,5 @@ node{
     environment {
         scannerHome = tool 'SonarQubeScanner'
     	}
-    }
-	    stage('Build Sonar Scanner'){
-		    
-        
-            sh "${scannerHome}/bin/sonar-scanner"
-
-    }
+    }	
 }
