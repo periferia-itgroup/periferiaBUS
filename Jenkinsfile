@@ -16,8 +16,8 @@ node{
     }
 	    stage('Build Sonar Scanner'){
 		    
-        withSonarQubeEnv('Sonarqube') {
+        
             sh "${scannerHome}/bin/sonar-scanner"
-	}
+
     }
 }
